@@ -208,7 +208,6 @@ $(document).ready(function () {
         const title = encodeURIComponent('My Todo List');
 
         $('.whatsapp').attr('href', `https://api.whatsapp.com/send?text=${msg}`);
-        $('.telegram').attr('href', `https://telegram.me/share/url?text=${msg}`);
     });
 
     setInterval(() => {
