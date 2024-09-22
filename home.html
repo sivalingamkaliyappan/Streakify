@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <link rel="stylesheet" href="home.css">  
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="app.js" defer></script>
+</head>
+<body>
+    <div class="container-home">
+        <div class="stats">
+            <div class="details">
+                <h1>Daily tasks</h1>
+                <div class="streaks">Streaks: <span>0</span></div>
+                <div class="streaks" id="achievement">Achievement: Bronze</div>
+                <div class="share-buttons">
+                    <a class="whatsapp" href="#"><img src="images/whatsapp.jfif" alt=""></a>
+                    <a class="telegram" href="#"><img src="images/telegram.jfif" alt=""></a>
+                </div>
+            </div>
+            <div class="stats-number">
+                <div id="numbers">
+                    <p id="task-head">Tasks completed</p>
+                    <p id="task-stats">0 / 0</p>
+                </div>
+            </div>
+            <img src="images/boy.jfif" alt="Profile Image">
+        </div>
+
+        <form id="inputs">
+            <input type="text" id="input-task" placeholder="Enter your task...">
+            <input type="datetime-local" id="input-time">
+            <select name="category" id="category">
+                <option value="" disabled selected>Select Category</option>
+                <option value="personal">Personal</option>
+                <option value="fitness">Fitness</option>
+                <option value="hobby">Hobby</option>
+                <option value="others">Others</option>
+            </select>
+            <select name="recurrence" id="recurrence">
+                <option value="none" selected>No Recurrence</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+            </select>
+            <button id="newtask" type="submit" aria-label="Add new task">ADD</button>
+        </form>
+        <button id="history">📝 History</button>
+        <button id="delete-all" class="delete-btn">Delete All Tasks</button>
+        <ul id="task-list"></ul>
+      
+       
+    </div>
+
+    <div id="custom-alert" class="popup">
+        <div class="popup-content">
+            <p id="alert-message">Don't forget to prioritize your well-being, add a fitness task!</p>
+            <button id="alert-ok">Got it</button>
+        </div>
+    </div>
+
+    <div id="history-popup" class="popup">
+        <div class="popup-content">
+            <h2>Completed Tasks History</h2>
+            <ul id="history-list"></ul>
+            <button id="history-ok">Close</button>
+        </div>
+    </div>
+</body>
+</html>
