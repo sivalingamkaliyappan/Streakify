@@ -1,5 +1,3 @@
-
-
 $(document).ready(function () {
     const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
     let streak = parseInt(localStorage.getItem('streak')) || 0;
@@ -15,7 +13,7 @@ $(document).ready(function () {
         localStorage.setItem('tasks', JSON.stringify(tasks));
     }
 
-    function renderTasks(filter=null) {
+    function renderTasks(filter = null) {
         $('#task-list').empty();
         updateTaskStats();
 
@@ -53,7 +51,7 @@ $(document).ready(function () {
                     <option value="hobby" ${task.category === 'hobby' ? 'selected' : ''}>Hobby</option>
                     <option value="others" ${task.category === 'others' ? 'selected' : ''}>Others</option>
                 `);
-             
+
                 const $saveButton = $('<button>').text('SAVE').addClass('save-btn');
 
                 $taskNameElem.replaceWith($taskNameInput);
@@ -65,6 +63,7 @@ $(document).ready(function () {
                     task.name = $taskNameInput.val();
                     task.time = $taskTimeInput.val();
                     task.category = $categorySelect.val();
+                    task.notified = false;
                     saveTasks();
                     renderTasks();
                 });
@@ -114,6 +113,7 @@ $(document).ready(function () {
         const taskName = $('#input-task').val();
         const taskTime = $('#input-time').val();
         const taskCategory = $('#category').val();
+        const recurrence = $('#recurrence').val();
 
         if (!taskName || !taskTime || !taskCategory) {
             alert('Please fill all fields!');
@@ -160,8 +160,6 @@ $(document).ready(function () {
         $('#history-popup').css('display', 'none');
     });
 
-    
-
     $('#delete-all').click(function () {
         if (confirm("Are you sure you want to delete all tasks?")) {
             tasks.length = 0; 
@@ -183,15 +181,17 @@ $(document).ready(function () {
                 saveTasks();
             }
 
-           
-            if (task.recurrence === 'daily') {
-                task.time = new Date(Date.now() + 86400000).toISOString().slice(0, 16); 
-            } else if (task.recurrence === 'weekly') {
-                task.time = new Date(Date.now() + 604800000).toISOString().slice(0, 16); 
-            } else if (task.recurrence === 'monthly') {
-                const date = new Date();
-                date.setMonth(date.getMonth() + 1);
-                task.time = date.toISOString().slice(0, 16); 
+            if (task.notified) {
+                if (task.recurrence === 'daily') {
+                    task.time = new Date(Date.now() + 86400000).toISOString().slice(0, 16);
+                } else if (task.recurrence === 'weekly') {
+                    task.time = new Date(Date.now() + 604800000).toISOString().slice(0, 16);
+                } else if (task.recurrence === 'monthly') {
+                    const date = new Date();
+                    date.setMonth(date.getMonth() + 1);
+                    task.time = date.toISOString().slice(0, 16);
+                }
+                task.notified = false;
             }
         });
         saveTasks();
@@ -200,15 +200,12 @@ $(document).ready(function () {
     setInterval(checkTaskNotifications, 60000);
     renderTasks();
     updateStreak();
-    
-    $(document).ready(function () {
 
-        const achievement = $('#achievement').text().replace('Achievement: ', '');
-        const msg = encodeURIComponent(`🎯 Just hit ${achievement} level! 🚀💪 On a ${streak} day streak! Happy to share  this with you 🎉🎉`);
-        const title = encodeURIComponent('My Todo List');
+    const achievement = $('#achievement').text().replace('Achievement: ', '');
+    const msg = encodeURIComponent(`🎯 Just hit ${achievement} level! 🚀💪 On a ${streak} day streak! Happy to share this with you 🎉🎉`);
+    const title = encodeURIComponent('My Todo List');
 
-        $('.whatsapp').attr('href', `https://api.whatsapp.com/send?text=${msg}`);
-    });
+    $('.whatsapp').attr('href', `https://api.whatsapp.com/send?text=${msg}`);
 
     setInterval(() => {
         const now = new Date();
