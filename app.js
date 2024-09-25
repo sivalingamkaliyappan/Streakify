@@ -92,6 +92,7 @@ $(document).ready(function () {
             }
             localStorage.setItem('streak', streak);
             lastDate = today;
+            $('.streak span').text(streak);
             localStorage.setItem('lastDate', lastDate);
             updateAchievement();
         }
