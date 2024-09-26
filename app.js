@@ -20,59 +20,60 @@ $(document).ready(function () {
         tasks.forEach((task, index) => {
             if (filter && task.checked !== filter) return;
 
-            const $taskItem = $('<li>').addClass('taskItem').hide().fadeIn(300);
-            const $checkbox = $('<input>').attr('type', 'checkbox').addClass('checkbox').prop('checked', task.checked);
-            const $taskNameElem = $('<p>').attr('id', 'task-name').text(task.name);
-            const $taskTimeElem = $('<p>').attr('id', 'task-time').text(task.time);
-            const $taskCategoryElem = $('<p>').attr('id', 'task-category').text(task.category.charAt(0).toUpperCase() + task.category.slice(1));
-            const $modifyDiv = $('<div>').addClass('modify');
-            const $editIcon = $('<img>').attr({ id: 'edit', src: 'images/edit.png', alt: 'Edit Icon' });
-            const $deleteIcon = $('<img>').attr({ id: 'delete', src: 'images/delete.png', alt: 'Delete Icon' });
+            const taskItem = $('<li>').addClass('taskItem').hide().fadeIn(300);
+            const checkbox = $('<input>').attr('type', 'checkbox').addClass('checkbox').prop('checked', task.checked);
+            const taskNameElem = $('<p>').attr('id', 'task-name').text(task.name);
+            const taskTimeElem = $('<p>').attr('id', 'task-time').text(task.time);
+            const taskCategoryElem = $('<p>').attr('id', 'task-category').text(task.category.charAt(0).toUpperCase() + task.category.slice(1));
+            const modifyDiv = $('<div>').addClass('modify');
+            const editIcon = $('<img>').attr({ id: 'edit', src: 'images/edit.png', alt: 'Edit Icon' });
+            const deleteIcon = $('<img>').attr({ id: 'delete', src: 'images/delete.png', alt: 'Delete Icon' });
 
-            $modifyDiv.append($editIcon).append($deleteIcon);
-            $taskItem.append($checkbox).append($taskNameElem).append($taskTimeElem).append($taskCategoryElem).append($modifyDiv);
-            $('#task-list').append($taskItem);
+            modifyDiv.append(editIcon).append(deleteIcon);
+            taskItem.append(checkbox).append(taskNameElem).append(taskTimeElem).append(taskCategoryElem).append(modifyDiv);
+            $('#task-list').append(taskItem);
 
-            $deleteIcon.click(function () {
-                $taskItem.fadeOut(300, function () {
+            deleteIcon.click(function () {
+                taskItem.fadeOut(300, function () {
                     tasks.splice(index, 1);
                     saveTasks();
                     renderTasks();
                 });
             });
 
-            $editIcon.click(function () {
-                $editIcon.hide();
-                const $taskNameInput = $('<input>').attr('type', 'text').val(task.name);
-                const $taskTimeInput = $('<input>').attr('type', 'datetime-local').val(task.time);
-                const $categorySelect = $('<select>').html(`
+            editIcon.click(function () {
+                editIcon.hide();
+                const taskNameInput = $('<input>').attr('type', 'text').val(task.name);
+                const taskTimeInput = $('<input>').attr('type', 'datetime-local').val(task.time);
+                const categorySelect = $('<select>').html(`
                     <option value="personal" ${task.category === 'personal' ? 'selected' : ''}>Personal</option>
                     <option value="fitness" ${task.category === 'fitness' ? 'selected' : ''}>Fitness</option>
                     <option value="hobby" ${task.category === 'hobby' ? 'selected' : ''}>Hobby</option>
                     <option value="others" ${task.category === 'others' ? 'selected' : ''}>Others</option>
                 `);
 
-                const $saveButton = $('<button>').text('SAVE').addClass('save-btn');
+                const saveButton = $('<button>').text('SAVE').addClass('save-btn');
 
-                $taskNameElem.replaceWith($taskNameInput);
-                $taskTimeElem.replaceWith($taskTimeInput);
-                $taskCategoryElem.replaceWith($categorySelect);
-                $modifyDiv.append($saveButton);
+                taskNameElem.replaceWith(taskNameInput);
+                taskTimeElem.replaceWith(taskTimeInput);
+                taskCategoryElem.replaceWith(categorySelect);
+                modifyDiv.append(saveButton);
 
-                $saveButton.click(function () {
-                    task.name = $taskNameInput.val();
-                    task.time = $taskTimeInput.val();
-                    task.category = $categorySelect.val();
+                saveButton.click(function () {
+                    task.name = taskNameInput.val();
+                    task.time = taskTimeInput.val();
+                    task.category = categorySelect.val();
                     task.notified = false;
                     saveTasks();
                     renderTasks();
                 });
             });
 
-            $checkbox.change(function () {
+            checkbox.change(function () {
                 task.checked = this.checked;
                 saveTasks();
                 updateTaskStats();
+                updateStreak();
             });
         });
     }
